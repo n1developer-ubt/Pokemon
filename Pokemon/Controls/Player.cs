@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using UBTStandardLibrary.Dialog;
 using System.Net.Http.Headers;
+using Syncfusion.DataSource.Extensions;
 using UBTStandardLibrary.Forms;
 
 namespace Pokemon.Controls
@@ -57,20 +58,33 @@ namespace Pokemon.Controls
 
             var roundControls = pnlRounds.Controls.OfType<PictureBox>();
 
-            foreach (var pokemon in game.Pokemons)
+            roundControls.ForEach(c =>
             {
-                if(!File.Exists(pokemon.Value))
-                    continue;
-                var cc = roundControls.FirstOrDefault(f => pokemon.Key.Equals(f.AccessibleName));
+                string val = null;
 
-                if (cc == null)
-                    continue;
-
-                using (var bmpTemp = new Bitmap(pokemon.Value))
+                try
                 {
-                   cc.Image = new Bitmap(bmpTemp);
+                    val = game.Pokemons[c.AccessibleName];
                 }
-            }
+                catch (Exception e)
+                {
+                    
+                }
+
+                if (val == null)
+                {
+                    c.Image = null;
+                    return;
+                }
+
+                if (!File.Exists(val))
+                    return;
+
+                using (var bmpTemp = new Bitmap(val))
+                {
+                    c.Image = new Bitmap(bmpTemp);
+                }
+            });
         }
 
         private void lblPlayerName_Click(object sender, EventArgs e)

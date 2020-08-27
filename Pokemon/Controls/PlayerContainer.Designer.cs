@@ -43,7 +43,7 @@
             // 
             // pnlPlayers
             // 
-            this.pnlPlayers.BackColor = System.Drawing.Color.White;
+            this.pnlPlayers.BackColor = System.Drawing.Color.Transparent;
             this.pnlPlayers.ColumnCount = 1;
             this.pnlPlayers.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.pnlPlayers.Controls.Add(this.player1, 0, 1);
@@ -74,8 +74,9 @@
             // player1
             // 
             this.player1.AccessibleName = "1";
-            this.player1.BackColor = System.Drawing.Color.White;
+            this.player1.BackColor = System.Drawing.Color.Transparent;
             this.player1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.player1.GameData = null;
             this.player1.Location = new System.Drawing.Point(3, 43);
             this.player1.Name = "player1";
             this.player1.Size = new System.Drawing.Size(801, 54);
@@ -84,8 +85,9 @@
             // player2
             // 
             this.player2.AccessibleName = "2";
-            this.player2.BackColor = System.Drawing.Color.White;
+            this.player2.BackColor = System.Drawing.Color.Transparent;
             this.player2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.player2.GameData = null;
             this.player2.Location = new System.Drawing.Point(3, 103);
             this.player2.Name = "player2";
             this.player2.Size = new System.Drawing.Size(801, 54);
@@ -94,8 +96,9 @@
             // player3
             // 
             this.player3.AccessibleName = "3";
-            this.player3.BackColor = System.Drawing.Color.White;
+            this.player3.BackColor = System.Drawing.Color.Transparent;
             this.player3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.player3.GameData = null;
             this.player3.Location = new System.Drawing.Point(3, 163);
             this.player3.Name = "player3";
             this.player3.Size = new System.Drawing.Size(801, 54);
@@ -104,8 +107,9 @@
             // player4
             // 
             this.player4.AccessibleName = "4";
-            this.player4.BackColor = System.Drawing.Color.White;
+            this.player4.BackColor = System.Drawing.Color.Transparent;
             this.player4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.player4.GameData = null;
             this.player4.Location = new System.Drawing.Point(3, 223);
             this.player4.Name = "player4";
             this.player4.Size = new System.Drawing.Size(801, 54);
@@ -114,8 +118,9 @@
             // player5
             // 
             this.player5.AccessibleName = "5";
-            this.player5.BackColor = System.Drawing.Color.White;
+            this.player5.BackColor = System.Drawing.Color.Transparent;
             this.player5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.player5.GameData = null;
             this.player5.Location = new System.Drawing.Point(3, 283);
             this.player5.Name = "player5";
             this.player5.Size = new System.Drawing.Size(801, 54);
@@ -124,8 +129,9 @@
             // player6
             // 
             this.player6.AccessibleName = "6";
-            this.player6.BackColor = System.Drawing.Color.White;
+            this.player6.BackColor = System.Drawing.Color.Transparent;
             this.player6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.player6.GameData = null;
             this.player6.Location = new System.Drawing.Point(3, 343);
             this.player6.Name = "player6";
             this.player6.Size = new System.Drawing.Size(801, 54);
@@ -134,8 +140,9 @@
             // player7
             // 
             this.player7.AccessibleName = "7";
-            this.player7.BackColor = System.Drawing.Color.White;
+            this.player7.BackColor = System.Drawing.Color.Transparent;
             this.player7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.player7.GameData = null;
             this.player7.Location = new System.Drawing.Point(3, 403);
             this.player7.Name = "player7";
             this.player7.Size = new System.Drawing.Size(801, 54);
@@ -144,8 +151,9 @@
             // player8
             // 
             this.player8.AccessibleName = "8";
-            this.player8.BackColor = System.Drawing.Color.White;
+            this.player8.BackColor = System.Drawing.Color.Transparent;
             this.player8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.player8.GameData = null;
             this.player8.Location = new System.Drawing.Point(3, 463);
             this.player8.Name = "player8";
             this.player8.Size = new System.Drawing.Size(801, 61);
@@ -153,7 +161,7 @@
             // 
             // rounds1
             // 
-            this.rounds1.BackColor = System.Drawing.Color.White;
+            this.rounds1.BackColor = System.Drawing.Color.Transparent;
             this.rounds1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rounds1.Location = new System.Drawing.Point(3, 3);
             this.rounds1.Name = "rounds1";

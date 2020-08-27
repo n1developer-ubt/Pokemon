@@ -28,12 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Pokemons));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnReloadAll = new Syncfusion.WinForms.Controls.SfButton();
+            this.btnDeleteAll = new Syncfusion.WinForms.Controls.SfButton();
             this.btnImportImages = new Syncfusion.WinForms.Controls.SfButton();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pnlPokemons = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnDeleteAll = new Syncfusion.WinForms.Controls.SfButton();
-            this.btnReloadAll = new Syncfusion.WinForms.Controls.SfButton();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -49,6 +50,44 @@
             this.panel1.Padding = new System.Windows.Forms.Padding(3);
             this.panel1.Size = new System.Drawing.Size(796, 43);
             this.panel1.TabIndex = 0;
+            // 
+            // btnReloadAll
+            // 
+            this.btnReloadAll.AccessibleName = "Button";
+            this.btnReloadAll.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnReloadAll.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
+            this.btnReloadAll.Location = new System.Drawing.Point(195, 3);
+            this.btnReloadAll.Name = "btnReloadAll";
+            this.btnReloadAll.Padding = new System.Windows.Forms.Padding(10);
+            this.btnReloadAll.Size = new System.Drawing.Size(96, 37);
+            this.btnReloadAll.Style.BackColor = System.Drawing.Color.Orange;
+            this.btnReloadAll.Style.FocusedBackColor = System.Drawing.Color.Orange;
+            this.btnReloadAll.Style.FocusedForeColor = System.Drawing.Color.White;
+            this.btnReloadAll.Style.ForeColor = System.Drawing.Color.White;
+            this.btnReloadAll.Style.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(195)))), ((int)(((byte)(85)))));
+            this.btnReloadAll.Style.HoverForeColor = System.Drawing.Color.White;
+            this.btnReloadAll.TabIndex = 5;
+            this.btnReloadAll.Text = "Reload All";
+            this.btnReloadAll.Click += new System.EventHandler(this.btnReloadAll_Click);
+            // 
+            // btnDeleteAll
+            // 
+            this.btnDeleteAll.AccessibleName = "Button";
+            this.btnDeleteAll.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnDeleteAll.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
+            this.btnDeleteAll.Location = new System.Drawing.Point(99, 3);
+            this.btnDeleteAll.Name = "btnDeleteAll";
+            this.btnDeleteAll.Padding = new System.Windows.Forms.Padding(10);
+            this.btnDeleteAll.Size = new System.Drawing.Size(96, 37);
+            this.btnDeleteAll.Style.BackColor = System.Drawing.Color.Red;
+            this.btnDeleteAll.Style.FocusedBackColor = System.Drawing.Color.Red;
+            this.btnDeleteAll.Style.FocusedForeColor = System.Drawing.Color.White;
+            this.btnDeleteAll.Style.ForeColor = System.Drawing.Color.White;
+            this.btnDeleteAll.Style.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
+            this.btnDeleteAll.Style.HoverForeColor = System.Drawing.Color.White;
+            this.btnDeleteAll.TabIndex = 4;
+            this.btnDeleteAll.Text = "Delete All";
+            this.btnDeleteAll.Click += new System.EventHandler(this.btnDeleteAll_Click);
             // 
             // btnImportImages
             // 
@@ -87,44 +126,6 @@
             this.pnlPokemons.Size = new System.Drawing.Size(796, 403);
             this.pnlPokemons.TabIndex = 0;
             // 
-            // btnDeleteAll
-            // 
-            this.btnDeleteAll.AccessibleName = "Button";
-            this.btnDeleteAll.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnDeleteAll.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
-            this.btnDeleteAll.Location = new System.Drawing.Point(99, 3);
-            this.btnDeleteAll.Name = "btnDeleteAll";
-            this.btnDeleteAll.Padding = new System.Windows.Forms.Padding(10);
-            this.btnDeleteAll.Size = new System.Drawing.Size(96, 37);
-            this.btnDeleteAll.Style.BackColor = System.Drawing.Color.Red;
-            this.btnDeleteAll.Style.FocusedBackColor = System.Drawing.Color.Red;
-            this.btnDeleteAll.Style.FocusedForeColor = System.Drawing.Color.White;
-            this.btnDeleteAll.Style.ForeColor = System.Drawing.Color.White;
-            this.btnDeleteAll.Style.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
-            this.btnDeleteAll.Style.HoverForeColor = System.Drawing.Color.White;
-            this.btnDeleteAll.TabIndex = 4;
-            this.btnDeleteAll.Text = "Delete All";
-            this.btnDeleteAll.Click += new System.EventHandler(this.btnDeleteAll_Click);
-            // 
-            // btnReloadAll
-            // 
-            this.btnReloadAll.AccessibleName = "Button";
-            this.btnReloadAll.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnReloadAll.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
-            this.btnReloadAll.Location = new System.Drawing.Point(195, 3);
-            this.btnReloadAll.Name = "btnReloadAll";
-            this.btnReloadAll.Padding = new System.Windows.Forms.Padding(10);
-            this.btnReloadAll.Size = new System.Drawing.Size(96, 37);
-            this.btnReloadAll.Style.BackColor = System.Drawing.Color.Orange;
-            this.btnReloadAll.Style.FocusedBackColor = System.Drawing.Color.Orange;
-            this.btnReloadAll.Style.FocusedForeColor = System.Drawing.Color.White;
-            this.btnReloadAll.Style.ForeColor = System.Drawing.Color.White;
-            this.btnReloadAll.Style.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(195)))), ((int)(((byte)(85)))));
-            this.btnReloadAll.Style.HoverForeColor = System.Drawing.Color.White;
-            this.btnReloadAll.TabIndex = 5;
-            this.btnReloadAll.Text = "Reload All";
-            this.btnReloadAll.Click += new System.EventHandler(this.btnReloadAll_Click);
-            // 
             // Pokemons
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -132,6 +133,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Pokemons";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Pokemons";

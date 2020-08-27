@@ -17,6 +17,7 @@ namespace Pokemon
     {
         public readonly Dictionary<string, string> imagesPath = new Dictionary<string, string>();
         public static string PokemonImagePath = Path.Combine(Application.StartupPath, "Pokemon");
+
         public Pokemons()
         {
             InitializeComponent();

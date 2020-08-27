@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Input));
             this.panel1 = new System.Windows.Forms.Panel();
             this.txtValue = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -40,10 +41,10 @@
             this.panel1.Controls.Add(this.txtValue);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Location = new System.Drawing.Point(2, 2);
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(3);
-            this.panel1.Size = new System.Drawing.Size(347, 125);
+            this.panel1.Size = new System.Drawing.Size(343, 121);
             this.panel1.TabIndex = 0;
             // 
             // txtValue
@@ -52,16 +53,16 @@
             this.txtValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtValue.Location = new System.Drawing.Point(3, 3);
             this.txtValue.Name = "txtValue";
-            this.txtValue.Size = new System.Drawing.Size(341, 29);
+            this.txtValue.Size = new System.Drawing.Size(337, 29);
             this.txtValue.TabIndex = 3;
             this.txtValue.Text = "New Value";
             // 
             // button1
             // 
             this.button1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.button1.Location = new System.Drawing.Point(3, 99);
+            this.button1.Location = new System.Drawing.Point(3, 95);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(341, 23);
+            this.button1.Size = new System.Drawing.Size(337, 23);
             this.button1.TabIndex = 2;
             this.button1.Text = "Done";
             this.button1.UseVisualStyleBackColor = true;
@@ -73,6 +74,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(347, 125);
             this.Controls.Add(this.panel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Input";
             this.Text = "Input";
             this.panel1.ResumeLayout(false);

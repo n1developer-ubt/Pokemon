@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Syncfusion.WinForms.Controls;
 
 namespace Pokemon
 {
-    public partial class Input : Form
+    public partial class Input : SfForm
     {
         public Input(string name)
         {
