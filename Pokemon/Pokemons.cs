@@ -15,7 +15,6 @@ namespace Pokemon
 {
     public partial class Pokemons : SfForm
     {
-        public readonly Dictionary<string, string> imagesPath = new Dictionary<string, string>();
         public static string PokemonImagePath = Path.Combine(Application.StartupPath, "Pokemon");
 
         public Pokemons()
@@ -24,8 +23,6 @@ namespace Pokemon
             PokemonImage.P = this;
             LoadAll();
         }
-
-        private int id = 0;
 
         private void btnImportImage_Click(object sender, EventArgs e)
         {

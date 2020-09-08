@@ -23,24 +23,54 @@ namespace Pokemon.Controls
 
         public event GameDataUpdated Updated;
 
+        public string PokemonTypePath = Path.Combine(Application.StartupPath, "PokemonType");
+
         public Player()
         {
             InitializeComponent();
+            banT.Parent = pbBan;
+            t1.Parent = pb1;
+            t2.Parent = pb2;
+            t3.Parent = pb3;
+            t4.Parent = pb4;
+            t5.Parent = pb5;
+            t6.Parent = pb6;
         }
 
-        public void UpdateRound(string round, string imagePath)
+        public void UpdateRound(string round, PokemonImageType imageType)
         {
-            var roundControls = pnlRounds.Controls.OfType<PictureBox>();
-            var cc = roundControls.FirstOrDefault(f => round.Equals(f.AccessibleName));
+            List<PictureBox> roundControls = pnlRounds.Controls.OfType<Panel>().SelectMany(x => x.Controls.OfType<PictureBox>()).ToList();
 
+            var l = roundControls.SelectMany(x => x.Controls.OfType<PictureBox>()).ToList();
+
+            roundControls.AddRange(l);
+
+            var cc = roundControls.FirstOrDefault(f => round.Equals(f.AccessibleName));
+            var cc1 = roundControls.FirstOrDefault(f => f.AccessibleName.Equals(round+"T",StringComparison.CurrentCultureIgnoreCase));
+            
             try
             {
-                using (var tmp = new Bitmap(imagePath))
+                if (imageType.Image== null || imageType.Image.Equals(""))
                 {
-                    cc.Image = new Bitmap(tmp);
+                    cc.Image = null;
+                    cc1.Image = null;
+                    GameData.Pokemons.Remove(round);
                 }
+                else
+                {
+                    using (var tmp = new Bitmap(imageType.Image))
+                    {
+                        cc.Image = new Bitmap(tmp);
+                    }
 
-                GameData.Pokemons[round] = imagePath;
+                    cc1.Image = GetBitmap(imageType.PokemonType);
+                    
+                    if(cc1.Image== null)
+                        cc1.Hide();
+                    else cc1.Show();
+
+                    GameData.Pokemons[round] = imageType;
+                }
 
                 Updated?.Invoke(GameData);
             }
@@ -56,35 +86,58 @@ namespace Pokemon.Controls
 
             lblPlayerName.Text = game.Name;
 
-            var roundControls = pnlRounds.Controls.OfType<PictureBox>();
+            List<PictureBox> roundControls = pnlRounds.Controls.OfType<Panel>().SelectMany(x => x.Controls.OfType<PictureBox>()).ToList();
 
-            roundControls.ForEach(c =>
+            var l = roundControls.SelectMany(x => x.Controls.OfType<PictureBox>()).ToList();
+
+            roundControls.AddRange(l);
+
+            roundControls.Where(x=>!game.Pokemons.ContainsKey(x.AccessibleName)||!game.Pokemons.ContainsKey(x.AccessibleName.Replace("T",""))).ForEach(x =>
+                {
+                    x.Image = null;
+                });
+
+            game.Pokemons.ForEach(p =>
             {
-                string val = null;
+                var r = roundControls.FirstOrDefault(f => f.AccessibleName.Equals(p.Key));
+                var r1 = roundControls.FirstOrDefault(f => f.AccessibleName.Equals(p.Key+"T", StringComparison.CurrentCultureIgnoreCase));
 
-                try
+                if (p.Value.Image == null || !File.Exists(p.Value.Image))
                 {
-                    val = game.Pokemons[c.AccessibleName];
-                }
-                catch (Exception e)
-                {
-                    
-                }
-
-                if (val == null)
-                {
-                    c.Image = null;
+                    r.Image = null;
+                    r1.Image = null;
                     return;
                 }
 
-                if (!File.Exists(val))
-                    return;
-
-                using (var bmpTemp = new Bitmap(val))
+                using (var bmpTemp = new Bitmap(p.Value.Image))
                 {
-                    c.Image = new Bitmap(bmpTemp);
+                    r.Image = new Bitmap(bmpTemp);
                 }
+
+                r1.Image = GetBitmap(p.Value.PokemonType);
             });
+        }
+
+        private Bitmap GetBitmap(PokemonType p)
+        {
+            var xp = Path.Combine(PokemonTypePath, p + ".png");
+            try
+            {
+                using (var bmpTemp = new Bitmap(xp))
+                {
+                    //bmpTemp.MakeTransparent(Color.Black);
+                    var x = new Bitmap(bmpTemp);
+                    //x.MakeTransparent();
+                    return x;
+                }
+            }
+            catch (Exception e)
+            {
+                //MessageBox.Show(e.Message);
+            }
+            
+
+            return null;
         }
 
         private void lblPlayerName_Click(object sender, EventArgs e)
@@ -106,5 +159,14 @@ namespace Pokemon.Controls
                 }
             }
         }
+    }
+
+    public enum PokemonType
+    {
+        BestBuddy,
+        MegaEvolution,
+        Purified,
+        Shadow,
+        None
     }
 }

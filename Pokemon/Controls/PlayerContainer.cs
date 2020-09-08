@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace Pokemon.Controls
 {
     public partial class PlayerContainer : UserControl
     {
         private const int Players = 8;
-        private const int Rounds = 8;
 
         private int CurrentRound;
         private int CurrentPlayer;
@@ -21,8 +21,10 @@ namespace Pokemon.Controls
         public List<PlayerGame> GameData = new List<PlayerGame>();
 
         public delegate void GameDataUpdated(List<PlayerGame> gameData);
+        public delegate void GameStatusUpdated(GameStatus gameStatus);
 
         public event GameDataUpdated Updated;
+        public event GameStatusUpdated StatusUpdated;
 
         private List<Player> PlayersList;
 
@@ -35,8 +37,46 @@ namespace Pokemon.Controls
             CurrentRound = 0;
         }
 
+        private readonly Stack<GameStatus> UndoStack = new Stack<GameStatus>();
+        private readonly Stack<GameStatus> RedoStack = new Stack<GameStatus>();
+
+        public void Undo()
+        {
+            if (UndoStack.Count == 0)
+                return;
+
+            var preStatus = UndoStack.Pop();
+            RedoStack.Push(preStatus);
+            CurrentGameStatus = preStatus;
+            PokemonSelected(new PokemonImageType(){PokemonType = PokemonType.None,Image = ""}, true);
+            CurrentGameStatus = preStatus;
+
+            StatusUpdated?.Invoke(CurrentGameStatus);
+        }
+
+        public void Redo()
+        {
+            if(RedoStack.Count == 0)
+                return;
+
+            var postStatus = RedoStack.Pop();
+            UndoStack.Push(postStatus);
+            //event
+            CurrentGameStatus = postStatus;
+            PokemonSelected(postStatus.ImageType,true);
+            StatusUpdated?.Invoke(CurrentGameStatus);
+        }
+
+        private void AddItem()
+        {
+            UndoStack.Push(CurrentGameStatus);
+            RedoStack.Clear();
+        }
+
         public void InitData()
         {
+            RedoStack.Clear();
+            UndoStack.Clear();
             GameData.Clear();
             foreach (var player in PlayersList)
             {
@@ -50,22 +90,25 @@ namespace Pokemon.Controls
             CurrentPlayer = 1;
             CurrentRound = 0;
             CurrentOrder = Order.Increasing;
-            Skip = false;
-            IsTurned = true;
+            _skip = false;
+            _isTurned = true;
         }
 
         public GameStatus CurrentGameStatus
         {
-            get => new GameStatus(){CurrentPlayer = CurrentPlayer,CurrentOrder = CurrentOrder, CurrentRound = CurrentRound, IsTurned = IsTurned, Skip = Skip};
+            get => new GameStatus(){CurrentPlayer = CurrentPlayer,CurrentOrder = CurrentOrder, CurrentRound = CurrentRound, IsTurned = _isTurned, Skip = _skip, ImageType =CurrentPokemonImageType };
             set
             {
                 CurrentPlayer = value.CurrentPlayer;
                 CurrentOrder = value.CurrentOrder;
                 CurrentRound = value.CurrentRound;
-                Skip = value.Skip;
-                IsTurned = value.IsTurned;
+                _skip = value.Skip;
+                _isTurned = value.IsTurned;
+                CurrentPokemonImageType = value.ImageType;
             }
         }
+
+        public PokemonImageType CurrentPokemonImageType { get; set; }
 
         public class GameStatus
         {
@@ -74,62 +117,64 @@ namespace Pokemon.Controls
             public Order CurrentOrder { get; set; } = Order.Increasing;
             public bool IsTurned { get; set; } = true;
             public bool Skip { get; set; } = false;
+            public PokemonImageType ImageType { get; set; }
         }
 
-        private bool Skip;
+        private bool _skip, _isTurned;
 
         public Order CurrentOrder ;
 
-        private bool IsTurned;
-
-        public bool PokemonSelected(string path)
+        public bool PokemonSelected(PokemonImageType imageType, bool isUndo = false)
         {
             var player = PlayersList.FirstOrDefault(x => x.GameData.Index.Equals(CurrentPlayer + ""));
 
             if (player == null)
                 return false;
 
-
-            if (CurrentPlayer == 1 && CurrentRound == 7)
+            if (CurrentPlayer == 1 && CurrentRound == 7 && !isUndo)
             {
                 MessageBox.Show("Game Over!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return true;
             }
 
+            player.UpdateRound(CurrentRound == 0 ? "Ban" : CurrentRound + "", imageType);
 
-            player.UpdateRound(CurrentRound == 0 ? "Ban" : CurrentRound + "", path);
+            CurrentPokemonImageType = imageType;
+
+            if(!isUndo)
+                AddItem();
 
             if (CurrentPlayer == 8 && CurrentRound == 0)
             {
                 CurrentPlayer = 1;
                 CurrentRound = 1;
-                Skip = true;
-                IsTurned = true;
+                _skip = true;
+                _isTurned = true;
             }
 
-            if (!Skip)
+            if (!_skip)
             {
-                if (CurrentPlayer == 1 && !IsTurned)
+                if (CurrentPlayer == 1 && !_isTurned)
                 {
                     CurrentRound++;
-                    IsTurned = true;
+                    _isTurned = true;
                 }
-                else if (CurrentPlayer == 1 && IsTurned)
+                else if (CurrentPlayer == 1 && _isTurned)
                 {
                     CurrentPlayer++;
-                    IsTurned = false;
+                    _isTurned = false;
                     CurrentOrder = Order.Increasing;
                 }
-                else if (CurrentPlayer == Players && !IsTurned)
+                else if (CurrentPlayer == Players && !_isTurned)
                 {
                     CurrentRound++;
-                    IsTurned = true;
+                    _isTurned = true;
                 }
-                else if (CurrentPlayer == Players && IsTurned)
+                else if (CurrentPlayer == Players && _isTurned)
                 {
                     CurrentPlayer--;
                     CurrentOrder = Order.Decreasing;
-                    IsTurned = false;
+                    _isTurned = false;
                 }
                 else if (CurrentOrder == Order.Increasing)
                 {
@@ -142,7 +187,7 @@ namespace Pokemon.Controls
             }
             else
             {
-                Skip = false;
+                _skip = false;
             }
 
             return true;
@@ -153,7 +198,6 @@ namespace Pokemon.Controls
             Increasing,
             Decreasing
         }
-
 
         public Status GetStatus()
         {

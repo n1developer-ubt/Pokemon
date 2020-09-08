@@ -10,19 +10,27 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using Pokemon.Controls;
-using Pokemon.Properties;
+using Syncfusion.DataSource.Extensions;
+using Syncfusion.Windows.Forms.Tools;
 using Syncfusion.WinForms.Controls;
 
 namespace Pokemon
 {
     public partial class MainWindow : SfForm
     {
-        private const int Players = 8;
-        private int Turn = 1;
-
         public MainWindow()
         {
             InitializeComponent();
+
+            if (Properties.Settings.Default.New)
+            {
+                Properties.Settings.Default.New = false;
+                Properties.Settings.Default.GameData = "";
+                Properties.Settings.Default.GameStatus = "";
+                Properties.Settings.Default.Save();
+            }
+
+            PokemonsType = new[] {chkP, chkBB, chkME, chkS};
 
             CheckForIllegalCrossThreadCalls = false;
 
@@ -32,11 +40,9 @@ namespace Pokemon
 
             playerContainer.Updated+=PlayerContainerOnUpdated;
 
-            LoadDD();
+            playerContainer.StatusUpdated+=PlayerContainerOnStatusUpdated;
 
-            //Settings.Default.GameStatus = "";
-            //Settings.Default.GameData = "";
-            //Settings.Default.Save();
+            LoadDD();
 
             if (!Properties.Settings.Default.GameData.Equals(""))
             {
@@ -46,8 +52,7 @@ namespace Pokemon
 
             if (!Properties.Settings.Default.GameStatus.Equals(""))
             {
-                playerContainer.CurrentGameStatus =
-                    JsonConvert.DeserializeObject<PlayerContainer.GameStatus>(Properties.Settings.Default.GameStatus);
+                playerContainer.CurrentGameStatus = JsonConvert.DeserializeObject<PlayerContainer.GameStatus>(Properties.Settings.Default.GameStatus);
             }
 
             UpdateStatus();
@@ -69,6 +74,12 @@ namespace Pokemon
             });
         }
 
+        private void PlayerContainerOnStatusUpdated(PlayerContainer.GameStatus gamestatus)
+        {
+            Properties.Settings.Default.GameStatus = JsonConvert.SerializeObject(gamestatus);
+            Properties.Settings.Default.Save();
+        }
+
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
             if(e.Control &&e.Shift && e.KeyCode == Keys.S)
@@ -85,6 +96,14 @@ namespace Pokemon
                 {
                     s.ShowDialog();
                 }
+            }
+            else if (e.Control && e.KeyCode == Keys.Z)
+            {
+                playerContainer.Undo();
+            }
+            else if (e.Control && e.KeyCode == Keys.Y)
+            {
+                playerContainer.Redo();
             }
         }
 
@@ -117,6 +136,7 @@ namespace Pokemon
         {
             Properties.Settings.Default.GameData = JsonConvert.SerializeObject(gamedata);
             Properties.Settings.Default.Save();
+            //MessageBox.Show(Properties.Settings.Default.GameData);
             UpdateStatus();
         }
 
@@ -126,13 +146,35 @@ namespace Pokemon
 
             var item = (FilePart) cbPokemon.SelectedItem;
 
-            if (playerContainer.PokemonSelected(item.Path))
+            if (playerContainer.PokemonSelected(new PokemonImageType{PokemonType = GetCurrentType(),Image = item.Path}))
             {
                 Properties.Settings.Default.GameStatus = JsonConvert.SerializeObject(playerContainer.CurrentGameStatus);
                 Properties.Settings.Default.GameData = JsonConvert.SerializeObject(playerContainer.GameData);
                 Properties.Settings.Default.Save();
                 UpdateStatus();
             }
+        }
+
+        private PokemonType GetCurrentType()
+        {
+            var select = PokemonsType.FirstOrDefault(x => x.Checked);
+
+            if (select == null)
+                return PokemonType.None;
+
+            switch (select.AccessibleName)
+            {
+                case "me":
+                    return PokemonType.MegaEvolution;
+                case "bb":
+                    return PokemonType.BestBuddy;
+                case "p":
+                    return PokemonType.Purified;
+                case "s":
+                    return PokemonType.Shadow;
+            }
+
+            return PokemonType.None;
         }
 
         private void btnClear_Click(object sender, EventArgs e)
@@ -147,6 +189,33 @@ namespace Pokemon
         private void btnReloadPokemons_Click(object sender, EventArgs e)
         {
             LoadDD();
+        }
+
+        private void btnUndo_Click(object sender, EventArgs e)
+        {
+            playerContainer.Undo();
+        }
+
+        private void btnRedo_Click(object sender, EventArgs e)
+        {
+            playerContainer.Redo();
+        }
+
+        public CheckBoxAdv[] PokemonsType;
+
+        private bool isChanging = false;
+
+        private void checkBoxAdv1_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (isChanging)
+                return;
+
+            if (!(sender is CheckBoxAdv c)) return;
+
+            if(c.Checked)
+                PokemonsType.Where(x=>x!=c).ForEach(x=>x.Checked = false);
+
+            isChanging = false;
         }
     }
 }

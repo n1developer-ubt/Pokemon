@@ -30,8 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
             this.pbBackground = new System.Windows.Forms.GroupBox();
-            this.btnSelect = new Syncfusion.WinForms.Controls.SfButton();
             this.pb = new System.Windows.Forms.PictureBox();
+            this.btnSelect = new Syncfusion.WinForms.Controls.SfButton();
             this.pbBackground.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
             this.SuspendLayout();
@@ -49,6 +49,16 @@
             this.pbBackground.TabStop = false;
             this.pbBackground.Text = "Background Image";
             // 
+            // pb
+            // 
+            this.pb.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pb.Location = new System.Drawing.Point(3, 22);
+            this.pb.Name = "pb";
+            this.pb.Size = new System.Drawing.Size(790, 214);
+            this.pb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pb.TabIndex = 2;
+            this.pb.TabStop = false;
+            // 
             // btnSelect
             // 
             this.btnSelect.AccessibleName = "Button";
@@ -60,16 +70,6 @@
             this.btnSelect.TabIndex = 1;
             this.btnSelect.Text = "Select";
             this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
-            // 
-            // pb
-            // 
-            this.pb.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pb.Location = new System.Drawing.Point(3, 22);
-            this.pb.Name = "pb";
-            this.pb.Size = new System.Drawing.Size(790, 214);
-            this.pb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pb.TabIndex = 2;
-            this.pb.TabStop = false;
             // 
             // Settings
             // 
